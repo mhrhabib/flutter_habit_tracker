@@ -43,13 +43,17 @@ class _AnimatedTaskState extends State<AnimatedTask>
 
   void _checkIconStatus(AnimationStatus status) {
     if (status == AnimationStatus.completed) {
-      setState(() {
-        _showCheckIcon = true;
-      });
-      Future.delayed(Duration(seconds: 1), () {
+      if (mounted) {
         setState(() {
-          _showCheckIcon = false;
+          _showCheckIcon = true;
         });
+      }
+      Future.delayed(Duration(seconds: 1), () {
+        if (mounted) {
+          setState(() {
+            _showCheckIcon = false;
+          });
+        }
       });
     }
   }
@@ -62,7 +66,7 @@ class _AnimatedTaskState extends State<AnimatedTask>
     }
   }
 
-  void _handleTapUp(TapUpDetails details) {
+  void _handelTapCancel() {
     if (_controller.status != AnimationStatus.completed) {
       _controller.reverse();
     }
@@ -72,7 +76,8 @@ class _AnimatedTaskState extends State<AnimatedTask>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTapDown: _handleTapDown,
-      onTapUp: _handleTapUp,
+      onTapUp: (_) => _handelTapCancel(),
+      onTapCancel: _handelTapCancel,
       child: AnimatedBuilder(
         animation: _animation,
         builder: (context, child) {
