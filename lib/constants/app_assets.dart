@@ -83,9 +83,9 @@ class AppAssets {
       ...allTaskIcons,
     ];
     for (final asset in assets) {
-     
       await precachePicture(
-        ExactAssetPicture(SvgPicture.svgStringDecoderOutsideViewBoxBuilder, asset),
+        ExactAssetPicture(
+            SvgPicture.svgStringDecoderOutsideViewBoxBuilder, asset),
         null,
       );
     }
